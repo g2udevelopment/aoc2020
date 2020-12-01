@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	lines, _ := readLines("./input-day1-1")
+	lines, _ := readLines("./input-day1")
 	var result int
 	for idx1, line1 := range lines {
 		for idx2, line2 := range remove(lines, idx1) {
