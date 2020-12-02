@@ -22,20 +22,9 @@ func (p Policy) IsValid() bool {
 }
 
 func (p Policy) IsValidSecondPolicy() bool {
-	valid := false
-	for idx, letter := range p.password {
-		tdx := idx + 1
-		if string(letter) == p.letter {
-			if !valid && (tdx == p.firstOcc || tdx == p.secondOcc) {
-				valid = true
-			} else if valid && (tdx == p.secondOcc) {
-				valid = false
-				break
-			}
-
-		}
-	}
-	return valid
+	first := string(p.password[p.firstOcc-1]) == p.letter && string(p.password[p.secondOcc-1]) != p.letter
+	second := string(p.password[p.firstOcc-1]) != p.letter && string(p.password[p.secondOcc-1]) == p.letter
+	return first || second
 }
 
 func main() {
