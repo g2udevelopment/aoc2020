@@ -9,16 +9,16 @@ import (
 )
 
 type Policy struct {
-	minOcc   int
-	maxOcc   int
-	letter   string
-	password string
+	firstOcc  int
+	secondOcc int
+	letter    string
+	password  string
 }
 
 // ISValid checks is policy is valid
 func (p Policy) IsValid() bool {
 	count := strings.Count(p.password, p.letter)
-	return count >= p.minOcc && count <= p.maxOcc
+	return count >= p.firstOcc && count <= p.secondOcc
 }
 
 func (p Policy) IsValidSecondPolicy() bool {
@@ -26,9 +26,9 @@ func (p Policy) IsValidSecondPolicy() bool {
 	for idx, letter := range p.password {
 		tdx := idx + 1
 		if string(letter) == p.letter {
-			if !valid && (tdx == p.minOcc || tdx == p.maxOcc) {
+			if !valid && (tdx == p.firstOcc || tdx == p.secondOcc) {
 				valid = true
-			} else if valid && (tdx == p.maxOcc) {
+			} else if valid && (tdx == p.secondOcc) {
 				valid = false
 				break
 			}
@@ -61,7 +61,7 @@ func parseLine(line string) Policy {
 	max, _ := strconv.Atoi(boundary[1])
 	letter := split[1][0] //it is ascii so don't bother with runes
 	pwd := split[2]
-	return Policy{minOcc: min, maxOcc: max, letter: string(letter), password: pwd}
+	return Policy{firstOcc: min, secondOcc: max, letter: string(letter), password: pwd}
 }
 
 // readLines reads a whole file into memory
