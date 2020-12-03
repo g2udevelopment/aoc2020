@@ -18,25 +18,15 @@ type Instruction struct {
 var prob []Instruction = []Instruction{{1, 1}, {3, 1}, {5, 1}, {7, 1}, {1, 2}}
 
 type Toboggan struct {
-	Map *Map
-}
-
-type Map struct {
-	w    int
-	h    int
-	Rows [][]int
-}
-
-func (m *Map) SymbolAt(x int, y int) int {
-	return m.Rows[y][x%m.w]
+	Map *util.Map
 }
 
 func (t *Toboggan) Drive(r int, d int, symbol int) int {
 	var x, y, count int
-	for i := 0; i < t.Map.h; i++ {
+	for i := 0; i < t.Map.Height; i++ {
 		x += r
 		y += d
-		if y < t.Map.h && t.Map.SymbolAt(x, y) == symbol {
+		if y < t.Map.Height && t.Map.SymbolAtWrappedRight(x, y) == symbol {
 
 			count++
 		}
@@ -46,13 +36,13 @@ func (t *Toboggan) Drive(r int, d int, symbol int) int {
 
 func NewFromLines(lines []string) *Toboggan {
 	t := new(Toboggan)
-	t.Map = new(Map)
+	t.Map = new(util.Map)
 	for _, line := range lines {
 		r := parseRingLine(line)
 		t.Map.Rows = append(t.Map.Rows, r)
 	}
-	t.Map.h = len(lines)
-	t.Map.w = len(t.Map.Rows[0])
+	t.Map.Height = len(lines)
+	t.Map.Width = len(t.Map.Rows[0])
 	return t
 }
 
