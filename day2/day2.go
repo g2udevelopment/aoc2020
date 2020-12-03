@@ -1,9 +1,8 @@
 package main
 
 import (
-	"bufio"
+	"aoc2020/util"
 	"fmt"
-	"os"
 	"strconv"
 	"strings"
 )
@@ -28,7 +27,7 @@ func (p Policy) IsValidSecondPolicy() bool {
 }
 
 func main() {
-	lines, _ := readLines("./input-day2")
+	lines, _ := util.ReadLines("./input-day2")
 	var count1 int
 	var count2 int
 	for _, line := range lines {
@@ -51,21 +50,4 @@ func parseLine(line string) Policy {
 	letter := split[1][0] //it is ascii so don't bother with runes
 	pwd := split[2]
 	return Policy{firstOcc: min, secondOcc: max, letter: string(letter), password: pwd}
-}
-
-// readLines reads a whole file into memory
-// and returns a slice of its lines.
-func readLines(path string) ([]string, error) {
-	file, err := os.Open(path)
-	if err != nil {
-		return nil, err
-	}
-	defer file.Close()
-
-	var lines []string
-	scanner := bufio.NewScanner(file)
-	for scanner.Scan() {
-		lines = append(lines, scanner.Text())
-	}
-	return lines, scanner.Err()
 }
