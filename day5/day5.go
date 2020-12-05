@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"math"
 	"sort"
+	"strconv"
 	"strings"
 )
 
@@ -40,32 +41,11 @@ func powInt(x, y int) int {
 	return int(math.Pow(float64(x), float64(y)))
 }
 
-type Range struct {
-	min int
-	max int
-}
-
-func (r *Range) Update(chardown string, char string, num int) {
-	if string(char) == chardown {
-		r.max = r.max - num
-	} else {
-		r.min = r.min + num
-	}
-}
-
 func parseLine(line string) (int, int) {
-	row := Range{min: 0, max: 127}
-	col := Range{min: 0, max: 7}
-	for idx, char := range line {
-		if idx < 7 {
-			num := powInt(2, 6-idx)
-			row.Update("F", string(char), num)
-		} else {
-			num := powInt(2, 9-idx)
-			col.Update("L", string(char), num)
-		}
-	}
-	return row.max, col.max
+	row, _ := strconv.ParseInt(strings.ReplaceAll(strings.ReplaceAll(line[0:7], "F", "0"), "B", "1"), 2, 32)
+	col, _ := strconv.ParseInt(strings.ReplaceAll(strings.ReplaceAll(line[7:10], "L", "0"), "R", "1"), 2, 32)
+
+	return int(row), int(col)
 }
 
 func CalcId(row int, col int) int {
